@@ -77,6 +77,10 @@ into the bundles. The service worker polls that file once a minute and reloads t
 the ids differ, so a finished build lands in the browser without visiting `brave://extensions`. It
 only ever runs for unpacked installs and can be switched off in the popup.
 
+Reloading an extension does not re-inject content scripts, so an image tab that is already open
+would keep running the previous build. The reload therefore refreshes the open viewer tabs first.
+If you ever reload from `brave://extensions` by hand, press F5 on the image tab afterwards.
+
 **Tests.** Vitest with happy-dom plus an in-memory fake `chrome` object. These prove the logic,
 never real browser behavior, so changes still need a quick check in Brave.
 

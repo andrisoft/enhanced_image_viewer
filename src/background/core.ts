@@ -55,6 +55,23 @@ export async function isViewerActive(tabId: number): Promise<boolean> {
   return (await readActiveTabs()).includes(tabId);
 }
 
+/**
+ * Reloading the extension does not re-inject content scripts, so an image tab that is already
+ * open keeps running the previous build. Refresh those tabs before the reload. Only tabs the
+ * viewer reported itself are touched, and chrome.tabs.reload needs no permission.
+ */
+export async function reloadViewerTabs(): Promise<number> {
+  const tabIds = await readActiveTabs();
+  for (const tabId of tabIds) {
+    try {
+      await chrome.tabs.reload(tabId);
+    } catch {
+      // The tab is gone; nothing to refresh.
+    }
+  }
+  return tabIds.length;
+}
+
 /** Gray icon as the extension-wide default: color is only ever set per tab. */
 export async function applyDefaultIcon(): Promise<void> {
   await chrome.action.setIcon({ path: GRAY_ICON });
@@ -82,7 +99,8 @@ export async function checkForNewBuild(currentBuildId: string): Promise<boolean>
   const data = (await response.json()) as { buildId?: string };
   if (!data.buildId || data.buildId === currentBuildId) return false;
 
-  await appendLog("info", "New build on disk, reloading the extension");
+  const refreshed = await reloadViewerTabs();
+  await appendLog("info", `New build on disk, reloading the extension (${refreshed} viewer tabs refreshed)`);
   chrome.runtime.reload();
   return true;
 }

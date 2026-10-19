@@ -4,6 +4,14 @@ All notable changes to this project are documented in this file.
 Format based on Keep a Changelog; this project uses Semantic Versioning.
 Every change is its own dated version; there is no Unreleased section.
 
+## [1.2.1] - 2026-10-19
+
+### Fixed
+- A development reload now refreshes the open image tabs as well. Reloading an extension does not
+  re-inject content scripts, so a tab that was already open kept running the previous build and
+  looked like the new feature had not arrived. This applies both to the automatic build check and
+  to the Reload extension button in the popup.
+
 ## [1.2.0] - 2026-10-19
 
 ### Added

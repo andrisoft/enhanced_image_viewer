@@ -63,6 +63,7 @@ export function createFakeChrome(options: FakeChromeOptions = {}) {
     },
     tabs: {
       query: vi.fn(async () => [{ id: 1 }]),
+      reload: vi.fn(async (_tabId: number) => {}),
       onUpdated: { addListener: vi.fn() },
       onRemoved: { addListener: vi.fn() },
     },

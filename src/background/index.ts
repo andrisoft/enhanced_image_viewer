@@ -18,6 +18,7 @@ import {
   markViewerActive,
   markViewerInactive,
   recordError,
+  reloadViewerTabs,
   startReloadAlarm,
 } from "./core.js";
 
@@ -60,7 +61,8 @@ chrome.runtime.onMessage.addListener((message: unknown, sender, sendResponse) =>
   }
 
   if (type === MSG_RELOAD) {
-    chrome.runtime.reload();
+    // Refresh the image tabs first, otherwise they keep running the previous content script.
+    void reloadViewerTabs().finally(() => chrome.runtime.reload());
     return false;
   }
 

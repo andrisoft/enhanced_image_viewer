@@ -10,6 +10,7 @@ import {
   markViewerActive,
   markViewerInactive,
   recordError,
+  reloadViewerTabs,
   startReloadAlarm,
 } from "../src/background/core.js";
 import { AUTO_RELOAD_KEY } from "../src/shared/settings.js";
@@ -92,6 +93,23 @@ describe("self reload", () => {
     stubBuildFile("build-2");
     expect(await checkForNewBuild("build-1")).toBe(true);
     expect(fake.runtime.reload).toHaveBeenCalledOnce();
+  });
+
+  it("refreshes the open viewer tabs first, so they do not keep the previous content script", async () => {
+    await markViewerActive(3);
+    await markViewerActive(8);
+    stubBuildFile("build-2");
+
+    await checkForNewBuild("build-1");
+
+    expect(fake.tabs.reload.mock.calls.map(([tabId]) => tabId)).toEqual([3, 8]);
+  });
+
+  it("survives a viewer tab that disappeared before the refresh", async () => {
+    await markViewerActive(3);
+    fake.tabs.reload.mockRejectedValueOnce(new Error("No tab with id: 3"));
+
+    expect(await reloadViewerTabs()).toBe(1);
   });
 
   it("stays quiet when the setting is off", async () => {
