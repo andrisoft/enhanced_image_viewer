@@ -148,6 +148,31 @@ export function afterResize(
   return clampPan(moved, image, newViewport);
 }
 
+/** One arrow key press moves this share of the viewport, but never less than MIN_PAN_STEP. */
+export const PAN_STEP_RATIO = 0.1;
+export const MIN_PAN_STEP = 40;
+
+/**
+ * Pan offset for an arrow key, or null for any other key. The view follows the arrow, so the
+ * image itself moves the other way.
+ */
+export function arrowPanDelta(key: string, viewport: Size): { dx: number; dy: number } | null {
+  const stepX = Math.max(MIN_PAN_STEP, viewport.width * PAN_STEP_RATIO);
+  const stepY = Math.max(MIN_PAN_STEP, viewport.height * PAN_STEP_RATIO);
+  switch (key) {
+    case "ArrowLeft":
+      return { dx: stepX, dy: 0 };
+    case "ArrowRight":
+      return { dx: -stepX, dy: 0 };
+    case "ArrowUp":
+      return { dx: 0, dy: stepY };
+    case "ArrowDown":
+      return { dx: 0, dy: -stepY };
+    default:
+      return null;
+  }
+}
+
 /** Zoom percentage for display, e.g. 240 for 2.4x. */
 export function zoomPercent(scale: number): number {
   return Math.round(scale * 100);

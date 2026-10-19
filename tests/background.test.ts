@@ -17,6 +17,17 @@ import { LOG_KEY, LOG_LIMIT, appendLog, readLog } from "../src/shared/log.js";
 
 let fake: FakeChrome;
 
+interface IconCall {
+  tabId?: number;
+  path: Record<string, string>;
+}
+
+function lastIconCall(): IconCall {
+  const call = fake.action.setIcon.mock.calls.at(-1)?.[0];
+  if (!call) throw new Error("setIcon was never called");
+  return call as IconCall;
+}
+
 function stubBuildFile(buildId: string, ok = true): void {
   globalThis.fetch = vi.fn(async () => ({
     ok,
@@ -38,7 +49,7 @@ describe("per tab state", () => {
 
     expect(await isViewerActive(7)).toBe(true);
     expect(fake.storage.session.data.get(ACTIVE_TABS_KEY)).toEqual([7]);
-    const [call] = fake.action.setIcon.mock.calls.at(-1) as [{ tabId: number; path: Record<string, string> }];
+    const call = lastIconCall();
     expect(call.tabId).toBe(7);
     expect(call.path[16]).toContain("icon-16.png");
   });
@@ -60,8 +71,7 @@ describe("per tab state", () => {
 
   it("uses the gray icon as the extension wide default", async () => {
     await applyDefaultIcon();
-    const [call] = fake.action.setIcon.mock.calls.at(-1) as [{ path: Record<string, string> }];
-    expect(call.path[16]).toContain("icon-gray-16.png");
+    expect(lastIconCall().path[16]).toContain("icon-gray-16.png");
   });
 });
 

@@ -3,8 +3,8 @@
  * behavior: happy-dom has no layout, so sizes are injected by hand.
  */
 
-import { beforeEach, describe, expect, it } from "vitest";
-import { IMAGE_CLASS, STAGE_CLASS, bootstrap, isImageDocument } from "../src/content/viewer.js";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { IMAGE_CLASS, STAGE_CLASS, bootstrap, isImageDocument, type Viewer } from "../src/content/viewer.js";
 import { baseState } from "../src/shared/zoom.js";
 
 function setContentType(type: string): void {
@@ -49,8 +49,25 @@ function transformOf(image: HTMLImageElement): string {
 
 const viewport = { width: window.innerWidth, height: window.innerHeight };
 
+/**
+ * The viewer listens for keydown on the document, so a viewer left behind by an earlier test
+ * would keep reacting to keys. Every test mounts through here and is torn down afterwards.
+ */
+let mounted: Viewer | null = null;
+
+function mount(css = ""): Viewer {
+  mounted = bootstrap(document, window, css);
+  if (!mounted) throw new Error("bootstrap did not take over the document");
+  return mounted;
+}
+
 beforeEach(() => {
   setContentType("image/png");
+});
+
+afterEach(() => {
+  mounted?.destroy();
+  mounted = null;
 });
 
 describe("isImageDocument", () => {
@@ -85,9 +102,8 @@ describe("bootstrap", () => {
 
   it("replaces the native image document with its own stage", () => {
     const original = buildImageDocument(4000, 2000);
-    const viewer = bootstrap(document, window, ".eiv-stage { inset: 0 }");
+    mount(".eiv-stage { inset: 0 }");
 
-    expect(viewer).not.toBeNull();
     expect(original.isConnected).toBe(false);
     expect(document.documentElement.classList.contains("eiv-host")).toBe(true);
     expect(document.querySelector("style")?.textContent).toContain(".eiv-stage");
@@ -100,7 +116,7 @@ describe("bootstrap", () => {
 
   it("opens at the base view", () => {
     buildImageDocument(4000, 2000);
-    const viewer = bootstrap(document, window, "")!;
+    const viewer = mount();
     const expected = baseState({ width: 4000, height: 2000 }, viewport);
 
     expect(viewer.getState().scale).toBeCloseTo(expected.scale);
@@ -113,7 +129,7 @@ describe("bootstrap", () => {
 describe("interactions", () => {
   it("zooms in on a wheel scroll up and out on a scroll down", () => {
     buildImageDocument(4000, 2000);
-    const viewer = bootstrap(document, window, "")!;
+    const viewer = mount();
     const start = viewer.getState().scale;
 
     viewer.stage.dispatchEvent(wheelEvent(-100, 500, 400));
@@ -126,7 +142,7 @@ describe("interactions", () => {
 
   it("pans while the left button is held and shows the dragging cursor", () => {
     buildImageDocument(4000, 2000);
-    const viewer = bootstrap(document, window, "")!;
+    const viewer = mount();
     // Zoom well past the viewport on both axes, so the drag is not cut off by the pan clamp.
     for (let index = 0; index < 3; index += 1) viewer.stage.dispatchEvent(wheelEvent(-1000, 500, 400));
     const before = viewer.getState();
@@ -148,7 +164,7 @@ describe("interactions", () => {
 
   it("ignores a drag started with a non primary button", () => {
     buildImageDocument(4000, 2000);
-    const viewer = bootstrap(document, window, "")!;
+    const viewer = mount();
     const before = viewer.getState();
 
     const rightDown = new window.MouseEvent("pointerdown", { clientX: 10, clientY: 10, button: 2, bubbles: true });
@@ -160,7 +176,7 @@ describe("interactions", () => {
 
   it("fills the window on a double click for a small image and resets on the next one", () => {
     buildImageDocument(100, 50);
-    const viewer = bootstrap(document, window, "")!;
+    const viewer = mount();
     expect(viewer.getState().scale).toBe(1);
 
     viewer.stage.dispatchEvent(new window.MouseEvent("dblclick", { bubbles: true, cancelable: true }));
@@ -172,9 +188,58 @@ describe("interactions", () => {
     expect(viewer.getState().scale).toBe(1);
   });
 
+  it("pans with the arrow keys once the image is larger than the window", () => {
+    buildImageDocument(4000, 2000);
+    const viewer = mount();
+    for (let index = 0; index < 3; index += 1) viewer.stage.dispatchEvent(wheelEvent(-1000, 500, 400));
+    const before = viewer.getState();
+
+    const right = new window.KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true, cancelable: true });
+    document.dispatchEvent(right);
+    const afterRight = viewer.getState();
+    expect(afterRight.x).toBeLessThan(before.x);
+    expect(right.defaultPrevented).toBe(true);
+
+    document.dispatchEvent(new window.KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true, cancelable: true }));
+    expect(viewer.getState().y).toBeLessThan(afterRight.y);
+
+    document.dispatchEvent(new window.KeyboardEvent("keydown", { key: "ArrowLeft", bubbles: true, cancelable: true }));
+    expect(viewer.getState().x).toBeCloseTo(before.x);
+  });
+
+  it("leaves arrow keys alone when the image fits the window", () => {
+    buildImageDocument(100, 50);
+    const viewer = mount();
+    const before = viewer.getState();
+
+    const event = new window.KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true, cancelable: true });
+    document.dispatchEvent(event);
+
+    expect(viewer.getState()).toEqual(before);
+    expect(event.defaultPrevented).toBe(false);
+  });
+
+  it("does not steal a browser shortcut", () => {
+    buildImageDocument(4000, 2000);
+    const viewer = mount();
+    for (let index = 0; index < 3; index += 1) viewer.stage.dispatchEvent(wheelEvent(-1000, 500, 400));
+    const before = viewer.getState();
+
+    const event = new window.KeyboardEvent("keydown", {
+      key: "ArrowRight",
+      ctrlKey: true,
+      bubbles: true,
+      cancelable: true,
+    });
+    document.dispatchEvent(event);
+
+    expect(viewer.getState()).toEqual(before);
+    expect(event.defaultPrevented).toBe(false);
+  });
+
   it("resets a zoomed view on a double click", () => {
     buildImageDocument(4000, 2000);
-    const viewer = bootstrap(document, window, "")!;
+    const viewer = mount();
     viewer.stage.dispatchEvent(wheelEvent(-500, 300, 300));
     expect(viewer.getState().scale).toBeGreaterThan(baseState({ width: 4000, height: 2000 }, viewport).scale);
 

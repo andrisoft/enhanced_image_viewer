@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
   MAX_SCALE,
+  MIN_PAN_STEP,
   MIN_SCALE,
   afterResize,
+  arrowPanDelta,
   baseScale,
   baseState,
   clampPan,
@@ -124,6 +126,24 @@ describe("double click", () => {
   it("is a reset for a large image, where base and fill are the same", () => {
     const base = baseState(largeImage, viewport);
     expect(nextDoubleClickState(base, largeImage, viewport).scale).toBeCloseTo(base.scale);
+  });
+});
+
+describe("arrowPanDelta", () => {
+  it("moves the view with the arrow, so the image moves the other way", () => {
+    expect(arrowPanDelta("ArrowRight", viewport)).toEqual({ dx: -100, dy: 0 });
+    expect(arrowPanDelta("ArrowLeft", viewport)).toEqual({ dx: 100, dy: 0 });
+    expect(arrowPanDelta("ArrowDown", viewport)).toEqual({ dx: 0, dy: -80 });
+    expect(arrowPanDelta("ArrowUp", viewport)).toEqual({ dx: 0, dy: 80 });
+  });
+
+  it("keeps a usable step in a tiny window", () => {
+    expect(arrowPanDelta("ArrowRight", { width: 200, height: 150 })).toEqual({ dx: -MIN_PAN_STEP, dy: 0 });
+  });
+
+  it("ignores any other key", () => {
+    expect(arrowPanDelta("a", viewport)).toBeNull();
+    expect(arrowPanDelta("PageDown", viewport)).toBeNull();
   });
 });
 

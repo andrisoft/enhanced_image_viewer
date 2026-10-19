@@ -4,6 +4,13 @@ All notable changes to this project are documented in this file.
 Format based on Keep a Changelog; this project uses Semantic Versioning.
 Every change is its own dated version; there is no Unreleased section.
 
+## [1.1.0] - 2026-10-19
+
+### Added
+- Arrow key panning: once the image is larger than the window, the arrow keys move the view by a
+  tenth of the window in that direction. The key press is only consumed when something actually
+  moved, so browser shortcuts and an image that fits the window are left alone.
+
 ## [1.0.0] - 2026-10-19
 
 ### Added

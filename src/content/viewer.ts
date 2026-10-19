@@ -10,6 +10,7 @@
 
 import {
   afterResize,
+  arrowPanDelta,
   baseState,
   nextDoubleClickState,
   panBy,
@@ -135,6 +136,20 @@ export function createViewer(doc: Document, win: Window, original: HTMLImageElem
     event.preventDefault();
   };
 
+  // Arrow keys pan when the image is larger than the window. The event is only consumed when
+  // something actually moved, so browser shortcuts keep working on an image that fits.
+  const onKeyDown = (event: KeyboardEvent): void => {
+    if (event.ctrlKey || event.altKey || event.metaKey) return;
+    viewport = viewportOf(win);
+    const delta = arrowPanDelta(event.key, viewport);
+    if (!delta) return;
+    const next = panBy(state, delta.dx, delta.dy, natural, viewport);
+    if (next.x === state.x && next.y === state.y) return;
+    state = next;
+    render();
+    event.preventDefault();
+  };
+
   const onResize = (): void => {
     const next = viewportOf(win);
     state = afterResize(state, natural, viewport, next);
@@ -149,6 +164,7 @@ export function createViewer(doc: Document, win: Window, original: HTMLImageElem
   stage.addEventListener("pointercancel", onPointerUp);
   stage.addEventListener("dblclick", onDoubleClick);
   stage.addEventListener("dragstart", onDragStart);
+  doc.addEventListener("keydown", onKeyDown);
   win.addEventListener("resize", onResize);
 
   if (image.complete && image.naturalWidth) {
@@ -175,6 +191,7 @@ export function createViewer(doc: Document, win: Window, original: HTMLImageElem
       stage.removeEventListener("pointercancel", onPointerUp);
       stage.removeEventListener("dblclick", onDoubleClick);
       stage.removeEventListener("dragstart", onDragStart);
+      doc.removeEventListener("keydown", onKeyDown);
       win.removeEventListener("resize", onResize);
       stage.remove();
     },

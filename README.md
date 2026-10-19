@@ -12,6 +12,7 @@ changes every tab of that site; this extension never touches it.
 |---|---|
 | Mouse wheel | Zoom in and out around the point under the cursor |
 | Left button held, then move | Pan the image (`grab` / `grabbing` cursor) |
+| Arrow keys | Pan left, right, up and down, once the image is larger than the window |
 | Double click | Switch between the base view (fits the window, never above 100%) and the fill view (a small image is scaled up until it touches a window edge) |
 | Window resize | The view is recomputed, keeping the point that was in the middle |
 

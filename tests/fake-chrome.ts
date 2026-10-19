@@ -43,13 +43,13 @@ export function createFakeChrome(options: FakeChromeOptions = {}) {
       onChanged: { addListener: vi.fn() },
     },
     action: {
-      setIcon: vi.fn(async () => {}),
-      setBadgeText: vi.fn(async () => {}),
-      setBadgeBackgroundColor: vi.fn(async () => {}),
+      setIcon: vi.fn(async (_details: { tabId?: number; path: Record<string, string> }) => {}),
+      setBadgeText: vi.fn(async (_details: { text: string }) => {}),
+      setBadgeBackgroundColor: vi.fn(async (_details: { color: string }) => {}),
     },
     alarms: {
-      create: vi.fn(async () => {}),
-      clear: vi.fn(async () => true),
+      create: vi.fn(async (_name: string, _info: { periodInMinutes: number }) => {}),
+      clear: vi.fn(async (_name: string) => true),
       onAlarm: { addListener: vi.fn() },
     },
     runtime: {
