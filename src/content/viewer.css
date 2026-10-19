@@ -1,0 +1,41 @@
+html.eiv-host,
+html.eiv-host body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #121212;
+}
+
+/* The native image document styles its own img and shows a zoom cursor; hide it until the
+   viewer has rebuilt the document, so there is no flash of the built-in viewer. */
+html.eiv-host body > img {
+  visibility: hidden;
+}
+
+html.eiv-host .eiv-stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #121212;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+html.eiv-host .eiv-stage.eiv-dragging {
+  cursor: grabbing;
+}
+
+html.eiv-host .eiv-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: visible;
+  transform-origin: 0 0;
+  will-change: transform;
+  -webkit-user-drag: none;
+  max-width: none;
+  max-height: none;
+}

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Enhanced Image Viewer</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Enhanced Image Viewer</h1>
+      <p id="status" class="status">Checking this tab...</p>
+    </header>
+
+    <section id="whats-new" class="panel" hidden>
+      <h2>What's new</h2>
+      <div id="whats-new-body" class="scroll"></div>
+      <button id="whats-new-dismiss" type="button" class="primary">Got it</button>
+    </section>
+
+    <section id="main" class="panel">
+      <p class="hint">
+        Open an image directly in a tab, then use the wheel to zoom, drag with the left button to
+        pan, and double click to switch between fit and fill.
+      </p>
+      <div class="row">
+        <label class="checkbox">
+          <input id="auto-reload" type="checkbox" />
+          <span>Development auto-reload</span>
+        </label>
+      </div>
+      <div class="row buttons">
+        <button id="show-changelog" type="button">Changelog</button>
+        <button id="show-log" type="button">Error log</button>
+        <button id="reload" type="button">Reload extension</button>
+      </div>
+    </section>
+
+    <section id="changelog" class="panel" hidden>
+      <h2>Changelog</h2>
+      <div id="changelog-body" class="scroll"></div>
+      <button class="back primary" type="button" data-back>Back</button>
+    </section>
+
+    <section id="log" class="panel" hidden>
+      <h2>Error log</h2>
+      <div id="log-body" class="scroll mono"></div>
+      <div class="row buttons">
+        <button id="export-log" type="button">Export</button>
+        <button id="clear-log" type="button">Clear</button>
+        <button class="primary" type="button" data-back>Back</button>
+      </div>
+    </section>
+
+    <footer id="footer"></footer>
+    <script src="popup.js"></script>
+  </body>
+</html>

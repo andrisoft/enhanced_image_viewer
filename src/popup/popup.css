@@ -1,0 +1,151 @@
+:root {
+  color-scheme: dark;
+  --bg: #16181c;
+  --panel: #1f2328;
+  --text: #e6e6e6;
+  --muted: #9aa4ae;
+  --accent: #4d8dff;
+  --border: #30363d;
+  --danger: #ff7b72;
+}
+
+/* An author rule with an explicit display would override the browser's [hidden] rule, so keep
+   this one and never style a hidden panel's display elsewhere. */
+[hidden] {
+  display: none !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 330px;
+  margin: 0;
+  padding: 12px;
+  background: var(--bg);
+  color: var(--text);
+  font: 13px/1.45 "Segoe UI", system-ui, sans-serif;
+}
+
+h1 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+h2 {
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status {
+  margin: 4px 0 10px;
+  color: var(--muted);
+}
+
+.status.active {
+  color: #7ee787;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.hint {
+  margin: 0 0 10px;
+  color: var(--muted);
+}
+
+.row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.row.buttons {
+  flex-wrap: wrap;
+}
+
+button {
+  flex: 1 1 auto;
+  min-width: 92px;
+  padding: 6px 10px;
+  background: #2a3038;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+}
+
+button:hover {
+  border-color: var(--accent);
+}
+
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0b0d10;
+  font-weight: 600;
+}
+
+.checkbox {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkbox input {
+  accent-color: var(--accent);
+  width: 15px;
+  height: 15px;
+}
+
+.scroll {
+  max-height: 220px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.scroll.mono {
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 11px;
+}
+
+.entry-version {
+  margin: 8px 0 2px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.entry-version:first-child {
+  margin-top: 0;
+}
+
+.entry-body {
+  margin: 0 0 6px;
+  color: var(--text);
+}
+
+.error-line {
+  color: var(--danger);
+}
+
+.back {
+  margin-top: 8px;
+}
+
+footer {
+  color: var(--muted);
+  text-align: right;
+  font-size: 11px;
+}

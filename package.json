@@ -1,0 +1,22 @@
+{
+  "name": "enhanced-image-viewer",
+  "version": "1.0.0",
+  "description": "Brave/Chromium MV3 extension: wheel zoom and drag pan for images opened directly in a tab",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "icons": "node scripts/icons.mjs",
+    "build": "node scripts/build.mjs",
+    "watch": "node scripts/build.mjs --watch",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "@types/chrome": "^0.3.5",
+    "esbuild": "^0.28.2",
+    "happy-dom": "^21.0.3",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  }
+}
