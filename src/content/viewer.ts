@@ -9,6 +9,7 @@
  */
 
 import {
+  FAST_PAN_MULTIPLIER,
   afterResize,
   arrowPanDelta,
   baseState,
@@ -136,12 +137,13 @@ export function createViewer(doc: Document, win: Window, original: HTMLImageElem
     event.preventDefault();
   };
 
-  // Arrow keys pan when the image is larger than the window. The event is only consumed when
-  // something actually moved, so browser shortcuts keep working on an image that fits.
+  // Arrow keys pan when the image is larger than the window, Ctrl making the step five times
+  // larger. The event is only consumed when something actually moved, so browser shortcuts keep
+  // working on an image that fits. Alt and Meta are left alone: Alt+Arrow is back and forward.
   const onKeyDown = (event: KeyboardEvent): void => {
-    if (event.ctrlKey || event.altKey || event.metaKey) return;
+    if (event.altKey || event.metaKey) return;
     viewport = viewportOf(win);
-    const delta = arrowPanDelta(event.key, viewport);
+    const delta = arrowPanDelta(event.key, viewport, event.ctrlKey ? FAST_PAN_MULTIPLIER : 1);
     if (!delta) return;
     const next = panBy(state, delta.dx, delta.dy, natural, viewport);
     if (next.x === state.x && next.y === state.y) return;

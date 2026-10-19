@@ -219,15 +219,37 @@ describe("interactions", () => {
     expect(event.defaultPrevented).toBe(false);
   });
 
-  it("does not steal a browser shortcut", () => {
+  it("pans five times as far with Ctrl held", () => {
+    buildImageDocument(4000, 2000);
+    const viewer = mount();
+    for (let index = 0; index < 3; index += 1) viewer.stage.dispatchEvent(wheelEvent(-1000, 500, 400));
+    const start = viewer.getState();
+
+    document.dispatchEvent(new window.KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true, cancelable: true }));
+    const normalStep = start.x - viewer.getState().x;
+
+    const fast = new window.KeyboardEvent("keydown", {
+      key: "ArrowRight",
+      ctrlKey: true,
+      bubbles: true,
+      cancelable: true,
+    });
+    const beforeFast = viewer.getState();
+    document.dispatchEvent(fast);
+
+    expect(beforeFast.x - viewer.getState().x).toBeCloseTo(normalStep * 5);
+    expect(fast.defaultPrevented).toBe(true);
+  });
+
+  it("does not steal the browser's Alt+Arrow shortcut", () => {
     buildImageDocument(4000, 2000);
     const viewer = mount();
     for (let index = 0; index < 3; index += 1) viewer.stage.dispatchEvent(wheelEvent(-1000, 500, 400));
     const before = viewer.getState();
 
     const event = new window.KeyboardEvent("keydown", {
-      key: "ArrowRight",
-      ctrlKey: true,
+      key: "ArrowLeft",
+      altKey: true,
       bubbles: true,
       cancelable: true,
     });

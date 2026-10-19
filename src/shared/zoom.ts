@@ -152,13 +152,20 @@ export function afterResize(
 export const PAN_STEP_RATIO = 0.02;
 export const MIN_PAN_STEP = 10;
 
+/** Holding Ctrl makes an arrow key step this many times larger. */
+export const FAST_PAN_MULTIPLIER = 5;
+
 /**
  * Pan offset for an arrow key, or null for any other key. The view follows the arrow, so the
  * image itself moves the other way.
  */
-export function arrowPanDelta(key: string, viewport: Size): { dx: number; dy: number } | null {
-  const stepX = Math.max(MIN_PAN_STEP, viewport.width * PAN_STEP_RATIO);
-  const stepY = Math.max(MIN_PAN_STEP, viewport.height * PAN_STEP_RATIO);
+export function arrowPanDelta(
+  key: string,
+  viewport: Size,
+  multiplier = 1,
+): { dx: number; dy: number } | null {
+  const stepX = Math.max(MIN_PAN_STEP, viewport.width * PAN_STEP_RATIO) * multiplier;
+  const stepY = Math.max(MIN_PAN_STEP, viewport.height * PAN_STEP_RATIO) * multiplier;
   switch (key) {
     case "ArrowLeft":
       return { dx: stepX, dy: 0 };

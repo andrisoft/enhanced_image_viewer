@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  FAST_PAN_MULTIPLIER,
   MAX_SCALE,
   MIN_PAN_STEP,
   MIN_SCALE,
@@ -139,6 +140,11 @@ describe("arrowPanDelta", () => {
 
   it("keeps a usable step in a tiny window", () => {
     expect(arrowPanDelta("ArrowRight", { width: 200, height: 150 })).toEqual({ dx: -MIN_PAN_STEP, dy: 0 });
+  });
+
+  it("multiplies the step for a fast pan", () => {
+    expect(arrowPanDelta("ArrowRight", viewport, FAST_PAN_MULTIPLIER)).toEqual({ dx: -100, dy: 0 });
+    expect(arrowPanDelta("ArrowUp", viewport, FAST_PAN_MULTIPLIER)).toEqual({ dx: 0, dy: 80 });
   });
 
   it("ignores any other key", () => {

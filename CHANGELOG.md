@@ -4,6 +4,12 @@ All notable changes to this project are documented in this file.
 Format based on Keep a Changelog; this project uses Semantic Versioning.
 Every change is its own dated version; there is no Unreleased section.
 
+## [1.2.0] - 2026-10-19
+
+### Added
+- Ctrl and an arrow key pans five times as far as the arrow key alone. Alt and Meta are still
+  ignored, so the browser's own Alt+Arrow back and forward keep working.
+
 ## [1.1.1] - 2026-10-19
 
 ### Changed
