@@ -4,6 +4,12 @@ All notable changes to this project are documented in this file.
 Format based on Keep a Changelog; this project uses Semantic Versioning.
 Every change is its own dated version; there is no Unreleased section.
 
+## [1.2.2] - 2026-10-19
+
+### Changed
+- Internal only: the project notes now record the stale content script trap and what has been
+  checked in a real browser so far.
+
 ## [1.2.1] - 2026-10-19
 
 ### Fixed
