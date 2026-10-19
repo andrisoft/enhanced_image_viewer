@@ -131,10 +131,10 @@ describe("double click", () => {
 
 describe("arrowPanDelta", () => {
   it("moves the view with the arrow, so the image moves the other way", () => {
-    expect(arrowPanDelta("ArrowRight", viewport)).toEqual({ dx: -100, dy: 0 });
-    expect(arrowPanDelta("ArrowLeft", viewport)).toEqual({ dx: 100, dy: 0 });
-    expect(arrowPanDelta("ArrowDown", viewport)).toEqual({ dx: 0, dy: -80 });
-    expect(arrowPanDelta("ArrowUp", viewport)).toEqual({ dx: 0, dy: 80 });
+    expect(arrowPanDelta("ArrowRight", viewport)).toEqual({ dx: -20, dy: 0 });
+    expect(arrowPanDelta("ArrowLeft", viewport)).toEqual({ dx: 20, dy: 0 });
+    expect(arrowPanDelta("ArrowDown", viewport)).toEqual({ dx: 0, dy: -16 });
+    expect(arrowPanDelta("ArrowUp", viewport)).toEqual({ dx: 0, dy: 16 });
   });
 
   it("keeps a usable step in a tiny window", () => {

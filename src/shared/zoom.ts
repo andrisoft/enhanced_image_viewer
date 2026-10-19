@@ -149,8 +149,8 @@ export function afterResize(
 }
 
 /** One arrow key press moves this share of the viewport, but never less than MIN_PAN_STEP. */
-export const PAN_STEP_RATIO = 0.1;
-export const MIN_PAN_STEP = 40;
+export const PAN_STEP_RATIO = 0.02;
+export const MIN_PAN_STEP = 10;
 
 /**
  * Pan offset for an arrow key, or null for any other key. The view follows the arrow, so the

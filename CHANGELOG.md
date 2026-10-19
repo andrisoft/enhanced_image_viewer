@@ -4,6 +4,12 @@ All notable changes to this project are documented in this file.
 Format based on Keep a Changelog; this project uses Semantic Versioning.
 Every change is its own dated version; there is no Unreleased section.
 
+## [1.1.1] - 2026-10-19
+
+### Changed
+- Arrow key steps are about a fifth of what they were: one press now moves 2% of the window
+  instead of 10%, which is a far finer movement on a zoomed in image.
+
 ## [1.1.0] - 2026-10-19
 
 ### Added
