@@ -31,7 +31,7 @@ function toGray(svg) {
   return grayed;
 }
 
-function renderPng(svg, size) {
+export function renderPng(svg, size) {
   const resvg = new Resvg(svg, { fitTo: { mode: "width", value: size } });
   return resvg.render().asPng();
 }

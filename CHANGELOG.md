@@ -4,6 +4,21 @@ All notable changes to this project are documented in this file.
 Format based on Keep a Changelog; this project uses Semantic Versioning.
 Every change is its own dated version; there is no Unreleased section.
 
+## [1.3.0] - 2026-10-20
+
+### Added
+- Prepared for publishing in the Chrome Web Store.
+- Popup: a "Report an issue" button that opens a new GitHub issue with only the extension version
+  prefilled, and, in a store install, a "Feedback / support" button that opens the support tab of
+  the store listing. The extension itself still sends nothing; the buttons only open a page.
+- `PRIVACY.md` and an MIT `LICENSE`.
+
+### Changed
+- The extension is renamed to Clean Image Viewer, so it cannot be confused with an older extension
+  of the same name that was flagged over collecting user data. This one collects nothing.
+- The development auto-reload switch and the Reload extension button are hidden in a store
+  install; an unpacked build still shows them.
+
 ## [1.2.2] - 2026-10-19
 
 ### Changed

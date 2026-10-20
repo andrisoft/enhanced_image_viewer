@@ -1,6 +1,6 @@
 /**
- * Popup: tab status, the one-time "what's new" view, the full changelog, the error log and the
- * development auto-reload switch. Every text node is set with textContent.
+ * Popup: tab status, the one-time "what's new" view, the full changelog, the error log, feedback
+ * links and the development auto-reload switch. Every text node is set with textContent.
  */
 
 import {
@@ -10,6 +10,7 @@ import {
   type ChangelogSection,
 } from "../shared/changelog.js";
 import { clearLog, formatLog, readLog } from "../shared/log.js";
+import { applyInstallMode } from "./install-mode.js";
 import { MSG_RELOAD, MSG_TAB_STATUS } from "../shared/messages.js";
 import { getLastSeenVersion, isAutoReloadEnabled, setAutoReloadEnabled, setLastSeenVersion } from "../shared/settings.js";
 
@@ -111,7 +112,7 @@ function exportLogFile(text: string): void {
   const url = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
   const link = document.createElement("a");
   link.href = url;
-  link.download = `enhanced-image-viewer-log-${new Date().toISOString().slice(0, 10)}.txt`;
+  link.download = `clean-image-viewer-log-${new Date().toISOString().slice(0, 10)}.txt`;
   link.click();
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
@@ -141,6 +142,7 @@ async function init(): Promise<void> {
     button.addEventListener("click", () => showPanel("main"));
   }
 
+  applyInstallMode(document);
   await showTabStatus();
   await showWhatsNew(sections);
 }

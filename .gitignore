@@ -1,5 +1,7 @@
 node_modules/
 dist/
+release/
+store/*.png
 .claude/
 check/
 update_claude_md.txt

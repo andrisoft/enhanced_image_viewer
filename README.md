@@ -1,4 +1,4 @@
-# Enhanced Image Viewer
+# Clean Image Viewer
 
 A small Brave / Chromium extension (Manifest V3) for images you open directly in a tab: zoom with
 the mouse wheel, drag to pan, double click to switch between fitting and filling the window.
@@ -41,7 +41,7 @@ Known limit, on purpose: an image URL without a file extension (for example
 6. Click **Load unpacked** and pick the `dist` folder inside this project.
 7. **For local files:** on the extension's **Details** page turn on **Allow access to file URLs**.
    Without it, `file:///C:/...` images are not handled.
-8. Pin the extension: click the puzzle piece icon in the toolbar, then the pin next to Enhanced
+8. Pin the extension: click the puzzle piece icon in the toolbar, then the pin next to Clean
    Image Viewer. The icon is gray on normal pages and colored in a tab where the viewer is active.
 9. Try it: open any `.jpg` or `.png` by direct link, or drag a local image file into a new tab.
 
@@ -83,6 +83,16 @@ If you ever reload from `brave://extensions` by hand, press F5 on the image tab 
 
 **Tests.** Vitest with happy-dom plus an in-memory fake `chrome` object. These prove the logic,
 never real browser behavior, so changes still need a quick check in Brave.
+
+## Feedback and privacy
+
+Bug reports and ideas: open an issue on GitHub (the popup's **Report an issue** button opens a new
+one with the extension version prefilled). The extension collects nothing and makes no network
+requests; see [PRIVACY.md](PRIVACY.md).
+
+## License
+
+MIT, see [LICENSE](LICENSE).
 
 ## Note
 

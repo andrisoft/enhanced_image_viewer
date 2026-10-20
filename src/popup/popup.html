@@ -2,12 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Enhanced Image Viewer</title>
+    <title>Clean Image Viewer</title>
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
     <header>
-      <h1>Enhanced Image Viewer</h1>
+      <h1>Clean Image Viewer</h1>
       <p id="status" class="status">Checking this tab...</p>
     </header>
 
@@ -22,7 +22,7 @@
         Open an image directly in a tab, then use the wheel to zoom, drag with the left button to
         pan, and double click to switch between fit and fill.
       </p>
-      <div class="row">
+      <div id="dev-controls" class="row">
         <label class="checkbox">
           <input id="auto-reload" type="checkbox" />
           <span>Development auto-reload</span>
@@ -32,6 +32,10 @@
         <button id="show-changelog" type="button">Changelog</button>
         <button id="show-log" type="button">Error log</button>
         <button id="reload" type="button">Reload extension</button>
+      </div>
+      <div class="row buttons">
+        <button id="feedback" type="button">Feedback / support</button>
+        <button id="report-issue" type="button">Report an issue</button>
       </div>
     </section>
 

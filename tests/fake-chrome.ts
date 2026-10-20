@@ -53,6 +53,7 @@ export function createFakeChrome(options: FakeChromeOptions = {}) {
       onAlarm: { addListener: vi.fn() },
     },
     runtime: {
+      id: "fakeextensionid",
       getManifest: () => manifest,
       getURL: (path: string) => `chrome-extension://fake/${path}`,
       reload: vi.fn(),
@@ -64,6 +65,7 @@ export function createFakeChrome(options: FakeChromeOptions = {}) {
     tabs: {
       query: vi.fn(async () => [{ id: 1 }]),
       reload: vi.fn(async (_tabId: number) => {}),
+      create: vi.fn(async (_properties: { url: string }) => ({})),
       onUpdated: { addListener: vi.fn() },
       onRemoved: { addListener: vi.fn() },
     },

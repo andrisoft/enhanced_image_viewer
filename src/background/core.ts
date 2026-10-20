@@ -4,6 +4,7 @@
  * module variables: every piece of state lives in chrome.storage.
  */
 
+import { isDevelopmentInstall } from "../shared/install.js";
 import { appendLog } from "../shared/log.js";
 import { getErrorCount, isAutoReloadEnabled, setErrorCount } from "../shared/settings.js";
 
@@ -77,13 +78,7 @@ export async function applyDefaultIcon(): Promise<void> {
   await chrome.action.setIcon({ path: GRAY_ICON });
 }
 
-/**
- * An unpacked (development) install has no update_url in its manifest. This extension is never
- * published, so the check only guards against the self-reload poll running in a packed build.
- */
-export function isDevelopmentInstall(): boolean {
-  return !("update_url" in chrome.runtime.getManifest());
-}
+export { isDevelopmentInstall };
 
 /**
  * Compares the build id on disk with the one baked into this bundle and reloads the extension

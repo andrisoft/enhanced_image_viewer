@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Enhanced Image Viewer",
+  "name": "Clean Image Viewer",
   "version": "0.0.0",
   "description": "Wheel zoom and drag pan for images opened directly in a tab. Per tab only, never the browser's per-domain zoom.",
   "permissions": ["storage", "alarms"],
@@ -9,7 +9,7 @@
     "type": "module"
   },
   "action": {
-    "default_title": "Enhanced Image Viewer",
+    "default_title": "Clean Image Viewer",
     "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/icon-gray-16.png",
