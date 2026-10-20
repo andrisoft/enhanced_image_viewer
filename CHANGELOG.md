@@ -4,6 +4,13 @@ All notable changes to this project are documented in this file.
 Format based on Keep a Changelog; this project uses Semantic Versioning.
 Every change is its own dated version; there is no Unreleased section.
 
+## [1.3.1] - 2026-10-20
+
+### Changed
+- Internal only: developer notes and everything used to publish the extension to the Chrome Web
+  Store are no longer part of the public source; they stay on the maintainer's machine. The
+  README now points to GitHub Issues for feedback and to the privacy policy.
+
 ## [1.3.0] - 2026-10-20
 
 ### Added
