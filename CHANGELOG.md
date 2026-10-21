@@ -4,6 +4,12 @@ All notable changes to this project are documented in this file.
 Format based on Keep a Changelog; this project uses Semantic Versioning.
 Every change is its own dated version; there is no Unreleased section.
 
+## [1.3.2] - 2026-10-22
+
+### Fixed
+- The "Report an issue" button and the privacy policy now point to the repository's current
+  address (github.com/andrisoft/clean-image-viewer).
+
 ## [1.3.1] - 2026-10-20
 
 ### Changed

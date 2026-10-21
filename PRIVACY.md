@@ -1,6 +1,6 @@
 # Privacy Policy: Clean Image Viewer
 
-Last updated: 2026-10-20
+Last updated: 2026-10-22
 
 Clean Image Viewer does not collect, transmit, sell or share any data.
 
